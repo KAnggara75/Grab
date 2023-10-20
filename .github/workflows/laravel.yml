@@ -1,0 +1,52 @@
+name: Laravel Test
+
+on:
+  push:
+    branches: ["main", "dev", "qa"]
+  pull_request:
+    branches: ["main", "dev", "qa"]
+
+jobs:
+  Laravel_Test:
+    runs-on: ubuntu-latest
+    container:
+      image: kirschbaumdevelopment/laravel-test-runner:8.2
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: test
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.4.0
+        with:
+          version: latest
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.8.1
+        with:
+          node-version: 18
+          cache: "pnpm"
+      - name: Install Depedency
+        run: pnpm i
+      - name: Build Assets
+        run: pnpm build
+      - name: Validate composer.json and composer.lock
+        run: composer validate --strict
+      - name: Install composer dependencies
+        run: |
+          composer install --no-scripts
+      - name: Prepare Laravel Application
+        run: |
+          cp .env.ci .env
+          php artisan key:generate
+      - name: Laravel Migrate
+        run: php artisan migrate
+      - name: Laravel Run Test
+        run: php artisan test
