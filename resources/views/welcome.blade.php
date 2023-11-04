@@ -378,12 +378,12 @@
         <div class="pt-2">
           <input
             class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-            id="price" name="price" type="number" value="13000" placeholder="15000">
+            id="price" name="price" type="number" value="{{ old('price', request()->input('price')) }}" placeholder="17500">
         </div>
         <div class="py-2">
           <input
             class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-            id="discount" name="discount" type="number" placeholder="Discount">
+            id="discount" name="discount" type="number" placeholder="Discount" value="{{ old('discount', request()->input('discount')) }}">
         </div>
         <hr>
         <div class="py-2">
@@ -395,18 +395,18 @@
         <div class="py-2">
           <input
             class="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-            id="hh" name="hh" type="number" value="{{ old("hh", request()->input("hh")) }}"
-            placeholder="hh">
+            id="hhmm" name="hhmm" type="number" value="{{ old("hhmm", request()->input("hhmm")) }}"
+            placeholder="hhmm">
         </div>
         <div class="my-3 w-full">
           <div class="relative">
             <select
               class="block w-full appearance-none rounded border border-gray-200 bg-gray-200 px-4 py-3 pr-8 leading-tight text-gray-700 focus:border-gray-500 focus:bg-white focus:outline-none"
               id="trip" name="trip">
-              <option>A</option>
-              <option>B</option>
-              <option>C</option>
-              <option>D</option>
+              <option value="A" {{ old("trip", request()->input("trip")) == 'A' ? 'selected' : '' }}>A</option>
+              <option value="B" {{ old("trip", request()->input("trip")) == 'B' ? 'selected' : '' }}>B</option>
+              <option value="C" {{ old("trip", request()->input("trip")) == 'C' ? 'selected' : '' }}>C</option>
+              <option value="D" {{ old("trip", request()->input("trip")) == 'D' ? 'selected' : '' }}>D</option>
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg class="h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
